@@ -1,0 +1,213 @@
+﻿@model BildadTeknikMulakat.Models.StudentModelView;
+@{
+    ViewData["Title"] = "Öğrenci Eklemek";
+}
+
+
+<div class="row">
+    <div class="card mb-6 col-7" style="margin:0px 20px 20px 20px">
+        <div class="card-header border-0 pt-6">
+            <div class="card-title row">
+                <div class="d-flex align-items-center position-relative my-1 col-4">
+                    <i class="fas fa-search position-absolute ms-6"></i>
+                    <input type="text" id="search-input" class="form-control form-control-solid ps-15" placeholder="Ara" onkeydown="DataTableSearch()" />
+                </div>
+                <div class="d-flex align-items-center position-relative my-1 col-3">
+                    <i class="fas fa-search position-absolute ms-6"></i>
+                    <input type="text" id="search-input" class="form-control form-control-solid ps-15" placeholder="Hobiler" onkeydown="DataTableSearch()" />
+                </div>
+                <div class="d-flex align-items-center position-relative my-1 col-3">
+                    <i class="fas fa-search position-absolute ms-6"></i>
+                    <input type="text" id="search-input" class="form-control form-control-solid ps-15" placeholder="Sınıf Öğretmeni" onkeydown="DataTableSearch()" />
+                </div>
+                <div class="d-flex justify-content-end col-2" data-kt-customer-table-toolbar="base">
+                    <button type="button" class="btn btn-primary" onclick="OpenProductModal()">
+                        <i class='bx bx-plus'></i>
+                        Ara
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body pt-0 row">
+            <table class="table align-middle table-row-dashed fs-6 gy-5 col-6" id="kt_product_table">
+                <!--begin::Table head-->
+                <thead>
+                    <!--begin::Table row-->
+                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                        <th class="min-w-100px text-center p-0 pb-3 pt-3">Ad Soyad</th>
+                        <th class="min-w-75px text-center p-0 pb-3 pt-3">Bölüm</th>
+                        <th class="min-w-75px text-center p-0 pb-3 pt-3">Hobiler</th>
+                        <th class="min-w-75px text-center p-0 pb-3 pt-3">Sınıf Öğretmeni</th>
+                        <th class="min-w-75px text-center p-0 pb-3 pt-3">Rehber Öğretmen</th>
+                        <th class="min-w-75px text-center p-0 pb-3 pt-3">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody class="fw-bold text-gray-600" id="product-table">
+                    @foreach (var student in Model.List)
+                    {
+                        <tr>
+                            <td class="text-center min-w-100px">
+                                <a href="" class="text-gray-800 text-hover-primary  mb-1">@student.FullName</a>
+                            </td>
+                            <td class="text-center min-w-75px">
+                                <a href="" class="text-gray-800 text-hover-primary  mb-1">@student.Section</a>
+                            </td>
+                            <td class="text-center min-w-75px">
+                                <a href="" class="text-gray-800 text-hover-primary  mb-1">@student.Hobby</a>
+                            </td>
+                            <td class="text-center min-w-75px">
+                                <a href="" class="text-gray-800 text-hover-primary  mb-1">@student.SchoolTeacher</a>
+                            </td>
+                            <td class="text-center min-w-75px">
+                                <a href="" class="text-gray-800 text-hover-primary  mb-1">@student.GuidanceTeacher</a>
+                            </td>
+                            <td class="text-center min-w-75px">
+                                <a href="#" class="btn btn-sm btn-light btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
+                                    İşlem <i class='bx bxs-chevrons-down'></i>
+                                </a>
+                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
+                                    <div class="menu-item px-3">
+                                        <button class="menu-link px-3" onclick="GetStudentById('@student.Id')">Düzenle</button>
+                                    </div>
+                                    <div class="menu-item px-3">
+                                        <button class="menu-link px-3 btn-delete" onclick="DeleteStudent('@student.Id')">Sil</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+    <br />
+    <div class="col-4" style="border:1px solid black;margin:0px 20px 20px 20px">
+        <form class="col-12">
+            <div class="row">
+                <div class="mb-7 col-6">
+                    <label class="required fs-6 fw-bold mb-2">Öğrenci Adı Soyadı :</label>
+                    <input class="form-control form-control-solid" placeholder="Ad Soyad" id="student-name" />
+                </div>
+                <div class="mb-7 col-6">
+                    <label class="required fs-6 fw-bold mb-2">Bölüm :</label>
+                    <select class="js-example-basic-single form-select form-select-solid" id="student-section">
+                        <option value="first-item">Bölüm</option>
+                        <option value="Tıp">Tıp</option>
+                        <option value="Mühendis">Mühendis</option>
+                        <option value="Veteriner">Veteriner</option>
+                        
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-7 col-6">
+                    <label class="required fs-6 fw-bold mb-2">Hobiler :</label>
+                    <select class="js-example-basic-single form-select form-select-solid" id="student-hobby">
+                        <option value="first-item">- Hobiler -</option>
+                        <option value="Yüzme">Yüzme</option>
+                        <option value="Tenis">Tenis</option>
+                        <option value="Masa Tenisi">Masa Tenisi</option>
+                    </select>
+                </div>
+                <div class=" mb-7 col-6">
+                    <label class="required fs-6 fw-bold mb-2">Sınıf Öğretmeni :</label>
+                    <select class="js-example-basic-single form-select form-select-solid" id="student-teacher">
+                        <option value="first-item">- Sınıf Öğretmeni -</option>
+                        <option value="A Kişisi">A Kişisi</option>
+                        <option value="B Kişisi">B Kişisi</option>
+                        <option value="C Kişisi">C Kişisi</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-7 col-12">
+                    <label class="required fs-6 fw-bold mb-2">Rehber Öğretmeni :</label>
+                    <select class="js-example-basic-single form-select form-select-solid" id="student-guide">
+                        <option value="first-item">- Rehber Öğretmeni -</option>
+                        <option value="A Rehber">A Rehber</option>
+                        <option value="B Rehber">B Rehber</option>
+                        <option value="C Rehber">C Rehber</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer flex-center">
+                <button type="button" class="btn btn-primary" id="send-btn">
+                    <span class="indicator-label" onclick="AddStudent()">Kaydet</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="~/assets/plugins/global/plugins.bundle.js"></script>
+
+<script>
+    function AddStudent() {
+        var studentName = $("#student-name").val();
+        var studentSection = $("#student-section").val();
+        var studentTeacher = $("#student-teacher").val();
+        var studentGuide = $("#student-guide").val();
+        var studentHobby = $("#student-hobby").val();
+        $.ajax({
+            url: "/Home/AddStudent",
+            method: "POST",
+            data: {
+                fullName: studentName,
+                section: studentSection,
+                teacher: studentTeacher,
+                guide: studentGuide,
+                hobby: studentHobby,
+            },
+            success:function(response){
+                if(response=="1"){
+                    alert("Başarıyla Eklendi");
+                    window.location.reload();
+                }
+                else if(response =="0"){
+                    alert("Başarısız Oldu");
+                    window.location.reload();
+                }
+            }
+        });
+    }
+
+    function DeleteStudent(studentId){
+        $.ajax({
+            url:"/Home/DeleteStudent",
+            method:"DELETE",
+            data: {
+                studentId:studentId,
+            },
+            success: function (response) {
+                if (response == "1") {
+                    alert("Başarıyla Silindi");
+                    window.location.reload();
+                }
+                else if (response == "0") {
+                    alert("Başarısız Oldu");
+                    window.location.reload();
+                }
+            }
+        });
+    }
+
+    function GetStudentById(studentId){
+        $.ajax({
+            url: "/Home/GetStudentById",
+            method: "Get",
+            data: {
+                studentId: studentId,
+            },
+            success: function (response) {
+                $("#student-name").val(response.fullName);
+                $("#student-section").val(response.section);
+                $("#student-teacher").val(response.schoolTeacher);
+                $("#student-guide").val(response.guidanceTeacher);
+                $("#student-hobby").val(response.hobby);
+            }
+        });
+    }
+</script>
+
+
